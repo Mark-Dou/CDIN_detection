@@ -97,10 +97,10 @@ class ForensicsClips(Dataset):
                
 
 
-        return sample_img, sample_mouth, sample_rois, video_idx
+        return sample_crop, sample_mouth, sample_rois, video_idx
 
     def __getitem__(self, idx):
-        sample_img, sample_mouth, video_idx = self.get_clip(idx)
+        sample_img, sample_mouth, sample_rois, video_idx = self.get_clip(idx)
 
         label = 0 if video_idx < self.videos_per_type['youtube'] else 1  # fake -> 1, real -> 0
         label = torch.from_numpy(np.array(label))
