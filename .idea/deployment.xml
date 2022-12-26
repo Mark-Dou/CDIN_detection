@@ -5,7 +5,7 @@
       <paths name="hanyiwang@wsl10">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/hanyiwang/deepfake/paper_code/FTCN" local="$PROJECT_DIR$/FTCN" web="/" />
+            <mapping deploy="/home/hanyiwang/deepfake/dynamic/CDIN" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
