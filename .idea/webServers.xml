@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="fdaabf58-3476-409c-beeb-cbc8d5d8a06b" name="hanyiwang@wsl10" url="http://192.168.0.120">
+        <fileTransfer host="192.168.0.120" port="40708" privateKey="$USER_HOME$/.ssh/id_rsa_hanyiwang" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="40708" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
