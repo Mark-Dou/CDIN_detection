@@ -5,10 +5,10 @@ import torch
 import cv2
 from multiprocessing import Pool
 from tqdm import tqdm
-from test_tools.common import detect_all, grab_all_frames
-from test_tools.utils import get_crop_box
-from test_tools.ct.operations import find_longest, multiple_tracking
-from test_tools.faster_crop_align_xray import FasterCropAlignXRay
+from FTCN.test_tools.common import detect_all, grab_all_frames
+from FTCN.test_tools.utils import get_crop_box
+from FTCN.test_tools.ct.operations import find_longest, multiple_tracking
+from FTCN.test_tools.faster_crop_align_xray import FasterCropAlignXRay
 
 
 
