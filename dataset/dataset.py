@@ -52,7 +52,6 @@ class ForensicsClips(Dataset):
                 if (frame_len - self.frames_per_clip + 1) < num_clips:
                     continue
 
-
                 self.clips_per_video.append(num_clips)
                 self.paths.append(path)
 
@@ -66,32 +65,50 @@ class ForensicsClips(Dataset):
         video_idx = bisect.bisect_right(self.cumulative_sizes, idx)  # upper bound
 
         path = self.paths[video_idx]
-        frames = sorted(os.listdir(path))
+        frames = sorted(os.listdir(os.path.join(path, 'crops')))
         # random sample clip per epoch
         frame_range = [
             frames[i: i + self.frames_per_clip] for i in range(len(frames)) if i + self.frames_per_clip <= len(frames)
         ]
         random_clip = random.choice(frame_range)
 
-        sample = []
+        sample_crop = []
+        sample_mouth = []
+        sample_rois = []
 
         for idx in random_clip:
-            with Image.open(os.path.join(path, idx)) as pil_img:
+            with Image.open(os.path.join(path, 'crops', idx)) as pil_img:
                 if self.grayscale:
                     pil_img = pil_img.convert("L")
                 if self.transform is not None:
                     img = self.transform(pil_img)
-            sample.append(img)
+            sample_crop.append(img)
 
-        return sample, video_idx
+            with Image.open(os.path.join(path, 'mouth', idx)) as pil_img:
+                if self.grayscale:
+                    pil_img = pil_img.convert("L")
+                if self.transform is not None:
+                    img = self.transform(pil_img)
+            sample_mouth.append(img)
+
+            with np.load(os.path.join(path, 'mouth_ldmarks', os.path.splitext(idx)[0] + '.npy')) as mouth_ldmarks:
+                ldmarks = torch.FloatTensor(mouth_ldmarks)
+            sample_rois.append(ldmarks)
+               
+
+
+        return sample_img, sample_mouth, sample_rois, video_idx
 
     def __getitem__(self, idx):
-        sample, video_idx = self.get_clip(idx)
+        sample_img, sample_mouth, video_idx = self.get_clip(idx)
 
         label = 0 if video_idx < self.videos_per_type['youtube'] else 1  # fake -> 1, real -> 0
         label = torch.from_numpy(np.array(label))
-        sample = torch.stack(sample, dim=0)
-        sample = sample.permute(1, 0, 2, 3)
+        sample_img = torch.stack(sample_img, dim=0)
+        sample_img = sample_img.permute(1, 0, 2, 3)
 
-        return sample, label, video_idx
+        sample_mouth = torch.stack(sample_mouth, dim=0)
+        sample_mouth = sample_mouth.permute(1, 0, 2, 3)
+
+        return sample_img, sample_mouth, sample_rois, label, video_idx
 
