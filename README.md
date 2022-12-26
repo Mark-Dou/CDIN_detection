@@ -5,7 +5,23 @@ A two-branch Complementary Dynamic Interaction Network (CDIN) is proposed to exp
 
 This is a PyTorch implementation of the paper.
 
-# Installation
+## Installation
 ``` python
 pip install -r requirements.txt
 ```
+## Prepare Dataset
+[FaceForensics++](https://github.com/ondyari/FaceForensics) as training dataset
+``` python
+python data_pre.py --dataset_path --output_path --subset --compression --imsize
+```
+## Training CDIN
+``` python
+python train.py
+```
+
+### Re-implement FTCN
+We also provide trainer to re-train FTCN model under ./FTCN/trainer
+``` python
+python FTCN/train_FTCN.py
+```
+
