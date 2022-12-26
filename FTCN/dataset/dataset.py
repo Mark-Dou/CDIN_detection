@@ -51,40 +51,17 @@ class ForensicsClips(Dataset):
                 num_clips = 12
                 if (frame_len - self.frames_per_clip + 1) < num_clips:
                     continue
-                # num_frames = min(len(os.listdir(path)), max_frames_per_video)
-
-                # override fix clip
-                # num_clips = num_frames // frames_per_clip
-
-                # random 12 clip per video
-
-                # index = list(range(num_frames))
-                # frame_range = [
-                #     index[i: i + self.frames_per_clip] for i in range(num_frames) if i + self.frames_per_clip<= num_frames
-                # ]
-                # num_clips = len(frame_range)
-
                 self.clips_per_video.append(num_clips)
                 self.paths.append(path)
-        print("videos_per_type")
-        print(self.videos_per_type)
 
         clip_lengths = torch.as_tensor(self.clips_per_video)
-        print("clip_length")
-        print(clip_lengths.size())
         self.cumulative_sizes = clip_lengths.cumsum(0).tolist()
-        print(len(self.cumulative_sizes))
-        print(self.cumulative_sizes[-1])
 
     def __len__(self):
         return self.cumulative_sizes[-1]
 
     def get_clip(self, idx):
         video_idx = bisect.bisect_right(self.cumulative_sizes, idx)  # upper bound
-        # if video_idx == 0:
-        #     clip_idx = idx
-        # else:
-        #     clip_idx = idx - self.cumulative_sizes[video_idx - 1]
 
         path = self.paths[video_idx]
         frames = sorted(os.listdir(path))
@@ -92,21 +69,10 @@ class ForensicsClips(Dataset):
         frame_range = [
             frames[i: i + self.frames_per_clip] for i in range(len(frames)) if i + self.frames_per_clip <= len(frames)
         ]
-        # random_clip = random.sample(frame_range, 1)
         random_clip = random.choice(frame_range)
 
-        # start_idx = clip_idx * self.frames_per_clip
-        #
-        # end_idx = start_idx + self.frames_per_clip
-
         sample = []
-        # for idx in range(start_idx, end_idx, 1):
-        #     with Image.open(os.path.join(path, frames[idx])) as pil_img:
-        #         if self.grayscale:
-        #             pil_img = pil_img.convert("L")
-        #         if self.transform is not None:
-        #             img = self.transform(pil_img)
-        #     sample.append(img)
+
         for idx in random_clip:
             with Image.open(os.path.join(path, idx)) as pil_img:
                 if self.grayscale:

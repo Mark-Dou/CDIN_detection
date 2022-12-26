@@ -122,9 +122,9 @@ if __name__ == '__main__':
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
-    parser.add_argument('--output_path', type=str, default='/home/hanyiwang/data/deepfake/ff/crops',
+    parser.add_argument('--output_path', type=str, default='',
                         help='the root path of the output images')
-    parser.add_argument('--dataset_path', type=str, default='/home/hanyiwang/data/deepfake/ff/frames',
+    parser.add_argument('--dataset_path', type=str, default='',
                         help='the root path of the dataset')
     parser.add_argument('--subset', type=str, default='youtube',
                         choices=['youtube', 'Deepfakes', 'Face2Face', 'FaceSwap', 'NeuralTextures'],
