@@ -19,7 +19,7 @@ python data_pre.py --dataset_path --output_path --subset --compression --imsize
 python train.py
 ```
 
-### Re-implement FTCN
+### Re-train FTCN
 We also provide trainer to re-train FTCN model under ./FTCN/trainer
 ``` python
 python FTCN/train_FTCN.py
